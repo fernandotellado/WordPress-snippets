@@ -1,4 +1,4 @@
-<!-- Inserta este script antes de tu script de Google Analytics - Cambia el UA-XXXXX-1 con tu ID de GA -->
+<!-- Inserta este script en vez de tu script de Google Analytics - Cambia el UA-XXXXX-1 con tu ID de GA -->
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -6,7 +6,7 @@
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
  
   ga('create', 'UA-XXXXXX-1', 'auto');
-ga('set', 'anonymizeIp', true);
+ga('set', 'anonymizeIp', true); //Esto es lo que anonomiza la ip
   ga('send', 'pageview');
  
 </script>
