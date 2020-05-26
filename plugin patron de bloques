@@ -1,0 +1,25 @@
+<?php
+/**
+ * Plugin Name: Patrón de bloques de misión, visión y valores a 3 columnas con imagen.
+ * Description: Un plugin básico para aprender a crear patrones de bloques de Gutenberg.
+ * Version: 1.0
+ * Author: Fernando Tellado
+ */
+ 
+/**
+ * Registro de estilos de bloques personalizados
+ */
+ 
+function fernandot_registra_patron_bloque_valores() {
+    if ( function_exists( 'register_pattern' ) ) {
+    /**
+    * Registro del patrón de bloques
+    */
+register_pattern(
+    'patrones-de-bloques-de-fernandot/mision-vision-valores-tres-columnas',
+    array(
+        'title'   => __( 'Misión, visión y valores a 3 columnas', 'patrones-de-bloques-de-fernandot' ),
+        'content' => "<!-- wp:columns {\"align\":\"wide\"} -->\n<div class=\"wp-block-columns alignwide\"><!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"style\":{\"color\":{\"background\":\"#d4f2ff\"}}} -->\n<h2 class=\"has-background\" style=\"background-color:#d4f2ff\">1. Misión</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"dropCap\":true} -->\n<p class=\"has-drop-cap\">Lorem fistrum te va a hasé pupitaa a peich torpedo qué dise usteer. Papaar papaar de la pradera ese hombree tiene musho peligro papaar papaar se calle ustée diodenoo me cago en tus muelas. </p>\n<!-- /wp:paragraph -->\n\n<!-- wp:image {\"align\":\"center\",\"className\":\"is-style-rounded\"} -->\n<div class=\"wp-block-image is-style-rounded\"><figure class=\"aligncenter\"><img alt=\"\"/></figure></div>\n<!-- /wp:image --></div>\n<!-- /wp:column -->\n\n<!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"style\":{\"color\":{\"background\":\"#ffe5e4\"}}} -->\n<h2 class=\"has-background\" style=\"background-color:#ffe5e4\">2. Visión</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"dropCap\":true} -->\n<p class=\"has-drop-cap\">Lorem fistrum te va a hasé pupitaa a peich torpedo qué dise usteer. Papaar papaar de la pradera ese hombree tiene musho peligro papaar papaar se calle ustée diodenoo me cago en tus muelas. </p>\n<!-- /wp:paragraph -->\n\n<!-- wp:image {\"align\":\"center\",\"className\":\"is-style-rounded\"} -->\n<div class=\"wp-block-image is-style-rounded\"><figure class=\"aligncenter\"><img alt=\"\"/></figure></div>\n<!-- /wp:image --></div>\n<!-- /wp:column -->\n\n<!-- wp:column -->\n<div class=\"wp-block-column\"><!-- wp:heading {\"style\":{\"color\":{\"background\":\"#ffdca3\"}}} -->\n<h2 class=\"has-background\" style=\"background-color:#ffdca3\">3. Valores</h2>\n<!-- /wp:heading -->\n\n<!-- wp:paragraph {\"dropCap\":true} -->\n<p class=\"has-drop-cap\">Lorem fistrum te va a hasé pupitaa a peich torpedo qué dise usteer. Papaar papaar de la pradera ese hombree tiene musho peligro papaar papaar se calle ustée diodenoo me cago en tus muelas. </p>\n<!-- /wp:paragraph -->\n\n<!-- wp:image {\"align\":\"center\",\"className\":\"is-style-rounded\"} -->\n<div class=\"wp-block-image is-style-rounded\"><figure class=\"aligncenter\"><img alt=\"\"/></figure></div>\n<!-- /wp:image --></div>\n<!-- /wp:column --></div>\n<!-- /wp:columns -->",
+    )
+);
+add_action( 'init', 'fernandot_registra_patron_bloque_valores' );
