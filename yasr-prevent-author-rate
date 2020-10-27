@@ -1,0 +1,11 @@
+/* Add this snippet to functions.php or plugin */
+add_filter('yasr_vv_shortcode', 'yasr_avoid_self_voting', 10, 2);
+function yasr_avoid_self_voting ($shortcode_html, $stored_votes) {
+    $author_id = get_the_author_meta('ID');
+    if(get_current_user_id() === $author_id && in_the_loop()) {
+        $old_value = 'data-rater-readonly=\'false\'';
+        $new_value = 'data-rater-readonly=\'true\' data-readonly-attribute="true"';
+        return str_replace($old_value, $new_value, $shortcode_html);
+    }
+    return $shortcode_html;
+}
