@@ -1,0 +1,118 @@
+<?php
+/*
+Plugin Name: SEO Nofollow Images
+Plugin URI: https://servicios.ayudawp.com
+Description: Automatically adds rel="nofollow" to all image links inserted in WordPress content, including galleries, for both Classic and Block editors.
+Version: 1.0
+Author: Fernando Tellado
+Author URI: https://ayudawp.com
+License: GPL2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: seo-nofollow-images
+*/
+
+// Añadir rel="nofollow" a enlaces de imágenes en el contenido
+function add_nofollow_to_image_links($content) {
+    if (!empty($content)) {
+        $dom = new DOMDocument();
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $content);
+        
+        $links = $dom->getElementsByTagName('a');
+        
+        foreach ($links as $link) {
+            $has_image = false;
+            foreach ($link->getElementsByTagName('img') as $img) {
+                $has_image = true;
+                break;
+            }
+            
+            if ($has_image) {
+                $rel = $link->getAttribute('rel');
+                if (empty($rel)) {
+                    $link->setAttribute('rel', 'nofollow');
+                } elseif (strpos($rel, 'nofollow') === false) {
+                    $link->setAttribute('rel', "$rel nofollow");
+                }
+            }
+        }
+        
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $content = '';
+        foreach ($body->childNodes as $node) {
+            $content .= $dom->saveHTML($node);
+        }
+        
+        return $content;
+    }
+    return $content;
+}
+add_filter('the_content', 'add_nofollow_to_image_links', 20);
+
+// Añadir rel="nofollow" a galerías de WordPress
+function add_nofollow_to_gallery_links($output, $attr, $instance) {
+    if (!empty($output)) {
+        $dom = new DOMDocument();
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $output);
+        
+        $links = $dom->getElementsByTagName('a');
+        
+        foreach ($links as $link) {
+            $rel = $link->getAttribute('rel');
+            if (empty($rel)) {
+                $link->setAttribute('rel', 'nofollow');
+            } elseif (strpos($rel, 'nofollow') === false) {
+                $link->setAttribute('rel', "$rel nofollow");
+            }
+        }
+        
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $output = '';
+        foreach ($body->childNodes as $node) {
+            $output .= $dom->saveHTML($node);
+        }
+    }
+    return $output;
+}
+add_filter('post_gallery', 'add_nofollow_to_gallery_links', 10, 3);
+
+// Añadir rel="nofollow" al insertar imágenes en el editor clásico
+function add_nofollow_to_image_send_to_editor($html, $id, $caption, $title, $align, $url, $size, $alt) {
+    if ($url) {
+        if (strpos($html, 'rel="nofollow"') === false) {
+            $html = str_replace('<a ', '<a rel="nofollow" ', $html);
+        }
+    }
+    return $html;
+}
+add_filter('image_send_to_editor', 'add_nofollow_to_image_send_to_editor', 10, 8);
+
+// Soporte para el editor de bloques (Gutenberg)
+function add_nofollow_to_block_images($block_content, $block) {
+    if (!empty($block_content) && 
+        (isset($block['blockName']) && 
+        ($block['blockName'] === 'core/image' || $block['blockName'] === 'core/gallery'))
+    ) {
+        $dom = new DOMDocument();
+        @$dom->loadHTML('<?xml encoding="utf-8" ?>' . $block_content);
+        
+        $links = $dom->getElementsByTagName('a');
+        
+        foreach ($links as $link) {
+            $rel = $link->getAttribute('rel');
+            if (empty($rel)) {
+                $link->setAttribute('rel', 'nofollow');
+            } elseif (strpos($rel, 'nofollow') === false) {
+                $link->setAttribute('rel', "$rel nofollow");
+            }
+        }
+        
+        $body = $dom->getElementsByTagName('body')->item(0);
+        $output = '';
+        foreach ($body->childNodes as $node) {
+            $output .= $dom->saveHTML($node);
+        }
+        return $output;
+    }
+    return $block_content;
+}
+add_filter('render_block', 'add_nofollow_to_block_images', 10, 2);
