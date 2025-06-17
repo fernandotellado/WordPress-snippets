@@ -1,0 +1,47 @@
+/* Botón de código inline en editor visual clásico TinyMCE */
+// Añadir botón al editor TinyMCE
+add_filter('mce_buttons', 'register_code_button');
+function register_code_button($buttons) {
+    array_push($buttons, 'code_button');
+    return $buttons;
+}
+
+// Registrar el plugin de TinyMCE
+add_filter('mce_external_plugins', 'add_code_button_plugin');
+function add_code_button_plugin($plugin_array) {
+    // Usamos un identificador único para el plugin
+    $plugin_array['code_button'] = admin_url('admin-ajax.php?action=tinymce_code_button_js');
+    return $plugin_array;
+}
+
+// Generar el JavaScript dinámicamente
+add_action('wp_ajax_tinymce_code_button_js', 'output_tinymce_code_button_js');
+function output_tinymce_code_button_js() {
+    header('Content-Type: application/javascript');
+    echo "(function() {
+        tinymce.PluginManager.add('code_button', function(editor, url) {
+            editor.addButton('code_button', {
+                text: '<code>',
+                icon: false,
+                onclick: function() {
+                    var selected_text = editor.selection.getContent();
+                    if (selected_text) {
+                        editor.selection.setContent('<code>' + selected_text + '</code>');
+                    } else {
+                        editor.selection.setContent('<code>Tu código aquí</code>');
+                    }
+                }
+            });
+            // Añadir atajo de teclado Ctrl+Mayús+C
+            editor.addShortcut('ctrl+shift+c', 'Envuelve el texto seleccionado en etiquetas de code', function() {
+                var selected_text = editor.selection.getContent();
+                if (selected_text) {
+                    editor.selection.setContent('<code>' + selected_text + '</code>');
+                } else {
+                    editor.selection.setContent('<code>Tu código aquí</code>');
+                }
+            });
+        });
+    })();";
+    exit;
+}
