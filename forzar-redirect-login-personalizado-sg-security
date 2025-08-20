@@ -1,0 +1,36 @@
+**
+ * Forzar redirecciones amigables con SiteGround Security Optimizer
+ * cuando se usa URL de acceso personalizada (/loguearse).
+ * 
+ * Compatible con WooCommerce y cualquier tema.
+ */
+
+// Slug de login definido en SiteGround Security Optimizer
+define( 'CUSTOM_LOGIN_SLUG', 'loguearse' );
+
+/**
+ * Redirigir al login personalizado cuando el usuario falla el login.
+ */
+add_action( 'wp_login_failed', function () {
+    wp_safe_redirect( home_url( '/' . CUSTOM_LOGIN_SLUG . '/?login=failed' ) );
+    exit;
+});
+
+/**
+ * Redirigir al login personalizado después de hacer logout.
+ */
+add_action( 'wp_logout', function () {
+    wp_safe_redirect( home_url( '/' . CUSTOM_LOGIN_SLUG . '/?loggedout=true' ) );
+    exit;
+});
+
+/**
+ * Prevenir 404 cuando alguien intenta acceder a /wp-admin sin estar logueado.
+ * Lo mandamos al slug correcto.
+ */
+add_action( 'init', function () {
+    if ( is_admin() && ! wp_doing_ajax() && ! is_user_logged_in() ) {
+        wp_safe_redirect( home_url( '/' . CUSTOM_LOGIN_SLUG . '/' ) );
+        exit;
+    }
+});
