@@ -1,0 +1,15 @@
+// Código para personalizar en functions.php o como plugin o MU y no tener que depender de plugins para enviar correos mediante SMTP en vez de con PHP mail()
+// Cambiar los valores, también el del puerto, a los adecuados
+/* Enviar emails de WordPress usando SMTP */
+add_action( 'phpmailer_init', 'ayudawp_configurar_smtp' );
+function ayudawp_configurar_smtp( $phpmailer ) {
+    $phpmailer->isSMTP();
+    $phpmailer->Host       = SMTP_HOST;
+    $phpmailer->SMTPAuth   = true;
+    $phpmailer->Port       = SMTP_PORT;
+    $phpmailer->Username   = SMTP_USER;
+    $phpmailer->Password   = SMTP_PASS;
+    $phpmailer->SMTPSecure = SMTP_SECURE;
+    $phpmailer->From       = SMTP_FROM;
+    $phpmailer->FromName   = SMTP_NAME;
+}
