@@ -1,5 +1,5 @@
 // Código para personalizar en wp-config.php y no tener que depender de plugins para enviar correos mediante SMTP en vez de con PHP mail()
-// Cambiar los valoreso, también el del puerto, a los adecuados
+// Cambiar los valores, también el del puerto, a los adecuados
 define( 'SMTP_HOST', 'smtp.tuservidor.com' );
 define( 'SMTP_PORT', 587 );
 define( 'SMTP_USER', 'usuario@tudominio.com' );
