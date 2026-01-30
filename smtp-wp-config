@@ -1,0 +1,9 @@
+// Código para personalizar en wp-config.php y no tener que depender de plugins para enviar correos mediante SMTP en vez de con PHP mail()
+// Cambiar los valoreso, también el del puerto, a los adecuados
+define( 'SMTP_HOST', 'smtp.tuservidor.com' );
+define( 'SMTP_PORT', 587 );
+define( 'SMTP_USER', 'usuario@tudominio.com' );
+define( 'SMTP_PASS', 'tu-contraseña' );
+define( 'SMTP_SECURE', 'tls' ); // 'ssl' o 'tls'
+define( 'SMTP_FROM', 'noreply@tudominio.com' );
+define( 'SMTP_NAME', 'Nombre de mi web' );
