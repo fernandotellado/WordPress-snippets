@@ -1,0 +1,35 @@
+<?php
+/**
+ * Cambiar el remitente (nombre y dirección «From») de los emails de WordPress.
+ *
+ * Útil cuando los avisos del sitio salen como «WordPress <wordpress@tudominio.com>»
+ * y quieres que lleguen con tu marca, por ejemplo «Atención al cliente
+ * <atencion@tudominio.com>».
+ *
+ * IMPORTANTE: afecta a TODOS los emails que el sitio envía con wp_mail()
+ * (los del plugin EU Withdrawal Compliance, los de WooCommerce y los del core).
+ * No limita el cambio a un plugin concreto.
+ *
+ * Cómo usarlo: pégalo en el functions.php de tu tema hijo o, mejor, en un mu-plugin.
+ * Edita las dos líneas marcadas más abajo.
+ *
+ * Nota de entregabilidad: cambiar el «From» no autentica tu correo. Si los emails
+ * acaban en spam, instala además un plugin SMTP (WP Mail SMTP, FluentSMTP, Post SMTP)
+ * que firme el envío con SPF/DKIM. Ese plugin ya te deja fijar el remitente, así que
+ * en ese caso este snippet sobra.
+ *
+ * @author Fernando Tellado
+ * @link   https://ayudawp.com
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+add_filter( 'wp_mail_from', function ( $from ) {
+	$direccion = 'atencion@tudominio.com'; // <-- pon aquí tu dirección de remitente.
+	return is_email( $direccion ) ? $direccion : $from;
+} );
+
+add_filter( 'wp_mail_from_name', function ( $name ) {
+	$nombre = 'Atención al cliente'; // <-- pon aquí el nombre del remitente.
+	return '' !== $nombre ? $nombre : $name;
+} );
